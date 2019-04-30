@@ -46,8 +46,8 @@ class Split(beam.DoFn):
             'remote_addr': element[0],
             'timelocal': element[1],
             'request_type': element[2],
-            'status': element[3],
-            'body_bytes_sent': element[4],
+            'body_bytes_sent': element[3],
+            'status': element[4],
             'http_referer': element[5],
             'http_user_agent': element[6]
     
