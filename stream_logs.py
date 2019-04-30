@@ -12,7 +12,6 @@ LINE = """\
 """
 
 
-log_fileD = "user_log_fileD.txt";
 
 def generate_log_line():
     fake = Faker()
@@ -22,7 +21,7 @@ def generate_log_line():
     request_type = random.choice(["GET", "POST", "PUT"])
     request_path = "/" + fake.uri_path()
 
-    status = random.choice([200, 401, 404])
+    status = np.random.choice([200, 401, 404], p = [0.9, 0.05, 0.05])
     body_bytes_sent = random.choice(range(5, 1000, 1))
     http_referer = fake.uri()
     http_user_agent = fake.user_agent()
@@ -39,30 +38,3 @@ def generate_log_line():
     )
 
     return log_line
-
-def write_log_line(log_file, line):
-    with open(log_file, "a") as f:
-        f.write(line)
-        f.write("\n")
-
-def clear_log_file(log_file):
-    with open(log_file, "w+") as f:
-        f.write("")
-
-if __name__ == "__main__":
-    current_log_file = log_fileD
-    lines_written = 0
-
-    # clear_log_file(LOG_FILE_A)
-    # clear_log_file(LOG_FILE_B)
-
-    while True:
-        line = generate_log_line()
-        print(line)
-
-        #write_log_line(current_log_file, line)
-        lines_written += 1
-
-        sleep_time = random.choice(range(1, 3, 1))
-
-        time.sleep(sleep_time)

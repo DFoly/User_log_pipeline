@@ -12,10 +12,8 @@ import random
 import time
 
 
-TOTAL = 10
 PROJECT_ID="user-logs-237110"
 TOPIC = "userlogs"
-BATCH = 20 # send every 20 to pubsub
 
 
 publisher = pubsub_v1.PublisherClient()
@@ -39,13 +37,8 @@ def callback(message_future):
 
 
 if __name__ == '__main__':
-    print("file running")
-    #Test
-    # data = "Hello this is a test"
-    # message_future = publish(publisher, topic_path, data)
-    # message_future.add_done_callback(callback)
-    current = 0
-    while current < TOTAL:
+ 
+    while True:
         line = generate_log_line()
         print(line)
         message_future = publish(publisher, topic_path, line)
