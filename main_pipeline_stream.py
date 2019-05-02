@@ -21,7 +21,7 @@ def regex_clean(data):
     result = []
     for match in PATTERNS:
       try:
-        reg_match = re.search(match, data).group(0)
+        reg_match = re.search(match, data).group()
         if reg_match:
           result.append(reg_match)
         else:
