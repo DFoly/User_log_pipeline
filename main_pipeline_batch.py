@@ -35,17 +35,17 @@ def regex_clean(data):
 class Split(beam.DoFn):
 
     def process(self, element):
-        """
-          Transforms data into PCollection for BQ
-        """
+        from datetime import datetime
         element = element.split(",")
+        d = datetime.strptime(element[1], "%d/%b/%Y:%H:%M:%S")
+        date_string = d.strftime("%Y-%m-%d %H:%M:%S")
 
         return [{ 
             'remote_addr': element[0],
-            'timelocal': element[1],
+            'timelocal': date_string,
             'request_type': element[2],
-            'status': element[3],
-            'body_bytes_sent': element[4],
+            'body_bytes_sent': element[3],
+            'status': element[4],
             'http_referer': element[5],
             'http_user_agent': element[6]
     
@@ -65,7 +65,7 @@ def main():
       | 'ReadData' >> beam.io.textio.ReadFromText(src_path)
       | "clean address" >> beam.Map(regex_clean)
       | 'ParseCSV' >> beam.ParDo(Split())
-      | 'WriteToBigQuery' >> beam.io.WriteToBigQuery('{0}:userlogs.streaminglogs'.format(PROJECT), schema=schema,
+      | 'WriteToBigQuery' >> beam.io.WriteToBigQuery('{0}:userlogs.logdata'.format(PROJECT), schema=schema,
         write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE)
    )
 

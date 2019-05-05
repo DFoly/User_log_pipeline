@@ -37,14 +37,14 @@ def regex_clean(data):
 class Split(beam.DoFn):
 
     def process(self, element):
-        """
-          Transforms data into PCollection for BQ
-        """
+        from datetime import datetime
         element = element.split(",")
+        d = datetime.strptime(element[1], "%d/%b/%Y:%H:%M:%S")
+        date_string = d.strftime("%Y-%m-%d %H:%M:%S")
 
         return [{ 
             'remote_addr': element[0],
-            'timelocal': element[1],
+            'timelocal': date_string,
             'request_type': element[2],
             'body_bytes_sent': element[3],
             'status': element[4],
